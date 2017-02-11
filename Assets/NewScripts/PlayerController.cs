@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    [SerializeField]
+    private float speed;
+    private float x, y;
+    private Rigidbody2D rigid;
 	// Use this for initialization
-	void Start () {
-		
+	void Awake () {
+        rigid = GetComponent<Rigidbody2D>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    void Update()  // el movimiento debe ir en el update
+    {
+        x = Input.GetAxis("Horizontal");
+        y = Input.GetAxis("Vertical");
+    }
+
+    void FixedUpdate()
+    {
+        rigid.AddForce(new Vector2(x * speed, y * speed));
+    }
 }
