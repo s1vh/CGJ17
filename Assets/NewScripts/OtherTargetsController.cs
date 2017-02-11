@@ -23,6 +23,8 @@ public class OtherTargetsController : MonoBehaviour {
     private float timeToTurnInFriend, maxSpeed, followSpeed, initialRotation, currentSpeed;
     private float timeChangingToFriend, minEnmity, maxEnmity, actualEnemity;
     //La Enmity es con lo que huyen, y la affinity con la que se acercan a ti, ambas cambian, la enmity aleatoriamente entre el maximo y minimo y el otro
+    [SerializeField]
+    private AudioClip blobSound;
 	
     public enum FSM
     {
@@ -215,6 +217,7 @@ public class OtherTargetsController : MonoBehaviour {
     public void PulseToMove()
     {
         actualEnemity = Random.Range(minEnmity, maxEnmity);
+        AudioSource.PlayClipAtPoint(blobSound, this.transform.position);
         if (actualStatus == FSM.Friend)
         {
             //MoveToThePlayer
