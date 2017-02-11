@@ -10,14 +10,13 @@ public class MainCharacter : MonoBehaviour {
     Rigidbody2D playerRigidbody;
     static public int acogidos = 0; //Esto es una barbaridad, lo se
 
-
-    void Awake()
+    // Use this for initialization
+    void Start()
     {
-
         playerRigidbody = GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate()
+    void Update()  // el movimiento debe ir en el update
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");

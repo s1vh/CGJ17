@@ -4,44 +4,36 @@ using UnityEngine;
 
 public class Persona : MonoBehaviour {
 
-    public float velocidad = 1f;
+    public float enmity = 1f;    // enmity is a 0~1 float
+    public bool leader = false;
 
-    Transform TransformLider;
-    Vector3 PersonaToLider;
-    Rigidbody2D PersonaRigidbody;
-    bool ConLider = false;
-    
+    float speed = 1f;
+    Transform persona;
+    Rigidbody2D personaRigidbody;
 
-
-    void Awake()
+    // Use this for initialization
+    void Start()
     {
-
-        PersonaRigidbody = GetComponent<Rigidbody2D>();
+        personaRigidbody = GetComponent<Rigidbody2D>();
     }
 
-	void FixedUpdate () {
-		if (ConLider)
+    void Update () {
+
+		if (leader)
         {
-            PersonaToLider = TransformLider.transform.position - this.transform.position;
-            PersonaToLider.z = 0f;
-            PersonaRigidbody.AddForce(PersonaToLider * velocidad);
+
         }
 	}
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        if (other.tag == "Player")
-        {
-            ConLider = true;
-            TransformLider = other.transform;
-            MainCharacter.acogidos++;
-        }
+
     }
 
-    void OnTriggerExit2D(Collider2D other)
+   /*void OnTriggerExit2D(Collider2D other)
     {
-        ConLider = false;
+        leader = false;
         PersonaRigidbody.MovePosition(this.transform.position);
         MainCharacter.acogidos--;
-    }
+    }*/
 }
