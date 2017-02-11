@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class MainCharacter : MonoBehaviour {
 
-
+    // Transform MCPosition;
     public float speed = 3f;
     Vector3 movement;
     Rigidbody2D playerRigidbody;
+    static public int acogidos = 0; //Esto es una barbaridad, lo se
 
 
     void Awake()
     {
+
         playerRigidbody = GetComponent<Rigidbody2D>();
     }
 
@@ -35,5 +37,10 @@ public class MainCharacter : MonoBehaviour {
         movement = movement.normalized * speed * Time.deltaTime;
 
         playerRigidbody.MovePosition(transform.position + movement);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+
     }
 }
