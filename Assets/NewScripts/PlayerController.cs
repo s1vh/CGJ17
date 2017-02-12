@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour {
     private float speed;
     private float x, y;
     private Rigidbody2D rigid;
+
+    public float distanceToFollow;
+    public int numberoffollowers;
 	// Use this for initialization
 	void Awake () {
         rigid = GetComponent<Rigidbody2D>();

@@ -17,7 +17,7 @@ public class OtherTargetsController : MonoBehaviour {
     private Transform nearestLeader;
     [SerializeField]
     private bool lookForALeader = true, followLeader, isOnRange;
-
+    private Transform myChorva;
     //For the couple
     private bool tieneChorva;
 
@@ -31,6 +31,7 @@ public class OtherTargetsController : MonoBehaviour {
 
     [SerializeField]
     private float researchForChrova = 1.5f, goToYourChorva;
+    private bool comeHereChorva;
     //For the leader
     [SerializeField]
     private float anglePosibleToMove, leaderMove;
@@ -141,15 +142,33 @@ public class OtherTargetsController : MonoBehaviour {
                 minEnmity = 0.5f; maxEnmity = 1f;
                 break;
             case FSM.Couple:
-                //Busca al potencial Couple más cercano y se liga, a ese, en caso de estar emparejados y que uno de ellos pase a ser otro estado, rompen y si el otro se queda en este estado
-                //Busca a otra pareja, mientras tanto sencillamente lo mantenemos como Lonely, se comporta igual hasta que encuentra a alguien nuevo
-                render.color = standardColor;
-                
-                //Buscar por la pareja soltera más cercana
+                ////Busca al potencial Couple más cercano y se liga, a ese, en caso de estar emparejados y que uno de ellos pase a ser otro estado, rompen y si el otro se queda en este estado
+                ////Busca a otra pareja, mientras tanto sencillamente lo mantenemos como Lonely, se comporta igual hasta que encuentra a alguien nuevo
+                //render.color = standardColor;
+                //gameObject.tag = "Couple";
+                ////Buscar por la pareja soltera más cercana
+                //if (tieneChorva == false)
+                //{
+                //    SearchForChorva();
+                //    if (myChorva != null)
+                //    {
+                //        tieneChorva = true;
+                //    }
+                //    break;
+                //}
+                //else
+                //{
+                //    if (myChorva == null)
+                //    {
+                //        tieneChorva = false;
+                //        break;
+                //    }
+                //    comeHereChorva = true;
+                //    anim.SetTrigger("Impulse");
+                //}
+                ////Ir a por ella, como buen macho pecho peludo de gran nabo
 
-                //Ir a por ella, como buen macho pecho peludo de gran nabo
-
-                minEnmity = 0.8f; maxEnmity = 1f;
+                //minEnmity = 0.8f; maxEnmity = 1f;
                 break;
             case FSM.ChangingToFriend:
                 //Estado en el que se queda quieto esperando a que se quede lejos, como solamente puedes pillar a los friendly, mientras estés en ese estado no podemos cambiarlo
@@ -185,7 +204,32 @@ public class OtherTargetsController : MonoBehaviour {
     }
     void SearchForChorva()
     {
-
+        GameObject[] allTheChorvas = GameObject.FindGameObjectsWithTag("Couple");
+        if (allTheChorvas.Length == 0)
+        {
+            myChorva = null;
+            return;
+        }
+        else if (allTheChorvas.Length == 1)
+        {
+            Debug.Log(allTheChorvas.Length);
+            if (!allTheChorvas[0].GetComponent<OtherTargetsController>().tieneChorva && (allTheChorvas[0] != gameObject))
+            {
+                myChorva = allTheChorvas[0].transform;
+            }
+            return;
+        }
+        myChorva = allTheChorvas[0].transform;
+        for (int i = 1; i < allTheChorvas.Length; i++)
+        {
+            if (Vector2.Distance(transform.position, allTheChorvas[i].transform.position) < Vector2.Distance(transform.position, myChorva.position))
+            {
+                if (!allTheChorvas[i].GetComponent<OtherTargetsController>().tieneChorva && (allTheChorvas[i] != gameObject))
+                {
+                    myChorva = allTheChorvas[i].transform;
+                }
+            }
+        }
     }
     void ResetIfCanMoveTheLeader()
     {
@@ -222,6 +266,7 @@ public class OtherTargetsController : MonoBehaviour {
         {
             actualStatus = FSM.Friendly;
             changingToFriend = false;
+            canChange = true;
         }
         if (col.gameObject.tag == "Reek" && actualStatus != FSM.Friend && actualStatus != FSM.ChangingToFriend)
         {
@@ -262,7 +307,7 @@ public class OtherTargetsController : MonoBehaviour {
                         {
                             actualStatus = FSM.Couple;
                         }
-                        else if (newChangeStatus <= 0.75f)
+                        else if (newChangeStatus >= 0.95f)
                         {
                             actualStatus = FSM.Friendly;
                             anim.SetBool("RUNOUT", false);
@@ -281,7 +326,7 @@ public class OtherTargetsController : MonoBehaviour {
                         {
                             actualStatus = FSM.Couple;
                         }
-                        else if (newChangeStatus >= 0.90f)
+                        else if (newChangeStatus >= 0.95f)
                         {
                             actualStatus = FSM.Friendly;
                             anim.SetBool("RUNOUT", false);
@@ -340,6 +385,12 @@ public class OtherTargetsController : MonoBehaviour {
             //MoveToThePlayer
             rigid.AddRelativeForce(new Vector2(followSpeed * smothFollow, 0), ForceMode2D.Impulse);
 
+        }
+        else if (comeHereChorva)
+        {
+            angle = Mathf.Atan2(myChorva.position.y - transform.position.y, myChorva.position.x - transform.position.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle - 180f, Vector3.forward);
+            rigid.AddRelativeForce(new Vector2(followSpeed * Random.Range(1.8f, 2.6f), 0), ForceMode2D.Impulse);
         }
         else if (impulseTheFUCKINGLeader)
         {
