@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
     private float x, y;
     private Rigidbody2D rigid;
 
-    public float distanceToFollow;
+    public float distanceToFollow, maxdistance;
     public int numberoffollowers;
 	// Use this for initialization
 	void Awake () {
@@ -18,6 +18,15 @@ public class PlayerController : MonoBehaviour {
 
     void Update()  // el movimiento debe ir en el update
     {
+        if (numberoffollowers >= 1)
+        {
+            distanceToFollow = maxdistance / Mathf.Sqrt(Mathf.Sqrt(numberoffollowers));
+        }
+        else
+        {
+            distanceToFollow = maxdistance;
+        }
+
         x = Input.GetAxis("Horizontal");
         y = Input.GetAxis("Vertical");
     }

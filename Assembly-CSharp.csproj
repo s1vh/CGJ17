@@ -46,13 +46,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\EventTriggerController.cs" />
+     <Compile Include="Assets\MoveWithUrPapito.cs" />
+     <Compile Include="Assets\NewScripts\CameraAutoZoom.cs" />
      <Compile Include="Assets\NewScripts\OtherTargetsController.cs" />
      <Compile Include="Assets\NewScripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\MainCharacter.cs" />
      <Compile Include="Assets\Scripts\Persona.cs" />
      <Compile Include="Assets\Scripts\RepulsionField.cs" />
      <Compile Include="Assets\Spawner.cs" />
+     <Compile Include="Assets\Sprites\EventTriggerController.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

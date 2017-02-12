@@ -10,6 +10,8 @@ public class OtherTargetsController : MonoBehaviour {
     [SerializeField]
     private float angle, minToFollow, smothFollow = 1f;
 
+    [SerializeField]
+    private GameObject myPapitoJart, papito;
     private Transform Player;
     private Rigidbody2D rigid;
     
@@ -177,16 +179,20 @@ public class OtherTargetsController : MonoBehaviour {
             case FSM.Friend:
                 //Aquí sigue al player, y eso, cada vez con una distancia mayor y tienes que volver a por él, es cuestión de interpolar colores
                 render.color = friendColor;
+                gameObject.tag = "Friend";
                 angle = Mathf.Atan2(Player.position.y - transform.position.y, Player.position.x - transform.position.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
                 //Controla la distancia máxima, si la supera sube a Lone
-                if (Vector2.Distance(transform.position, Player.position) >= distanceToStopFollow)
+                if (Vector2.Distance(transform.position, Player.position) >= Player.GetComponent<PlayerController>().distanceToFollow)
                 {
                     canChange = true;
                     changingToFriend = false;
                     actualStatus = FSM.Lonely;
                     anim.SetBool("RUNOUT", false);
+
+                    papito.GetComponent<MoveWithUrPapito>().RomperConmigoPorQUENOMEQUIERES();
+                    Player.GetComponent<PlayerController>().numberoffollowers--;
                     break;
                 }
 
@@ -417,12 +423,19 @@ public class OtherTargetsController : MonoBehaviour {
     }
     public void TurnIntoFriend()
     {
+        papito = Instantiate(myPapitoJart, transform.position, Quaternion.AngleAxis(0, Vector3.forward));
+        papito.GetComponent<MoveWithUrPapito>().HazmeTuPapito(gameObject.transform);
+
+        changingToFriend = false;
+        canChange = false;
+        Player.GetComponent<PlayerController>().numberoffollowers++;
         //Te conviertes en amigo, en este caso te comportas como te corresponde
         actualStatus = FSM.Friend;
     }
     public void MakeMeAFriend()
     {
-        //Ahora somos amigos, 4EverAndever, #OkNo #Bae
+        
+        //Ahora somos amigos, 4EverAndever, #OkNo #Bae #NoHomo
         actualStatus = FSM.Friend;
     }
 }
