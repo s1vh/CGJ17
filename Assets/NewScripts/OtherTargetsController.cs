@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(AudioSource))]
 public class OtherTargetsController : MonoBehaviour {
     [SerializeField]
     private Color standardColor, friendlyColor, friendColor;
@@ -9,6 +12,10 @@ public class OtherTargetsController : MonoBehaviour {
     //Esto para la transformación progresiva de los ángulos y el color
     [SerializeField]
     private float angle, minToFollow, smothFollow = 1f;
+
+    public AudioClip clip;
+
+    private AudioSource audio; 
 
     [SerializeField]
     private GameObject myPapitoJart, papito;
@@ -60,6 +67,8 @@ public class OtherTargetsController : MonoBehaviour {
 
     void Awake()
     {
+        audio = GetComponent<AudioSource>();
+
         anim = anim.GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         render = render.GetComponent<SpriteRenderer>();
@@ -70,6 +79,7 @@ public class OtherTargetsController : MonoBehaviour {
         render.color = standardColor;
         InvokeRepeating("ChangeStatus", 0f, Random.Range(2.5f, 3.5f));
     }
+
     void Update()
     {
         if (changingToFriend)
@@ -390,6 +400,7 @@ public class OtherTargetsController : MonoBehaviour {
         {
             //MoveToThePlayer
             rigid.AddRelativeForce(new Vector2(followSpeed * smothFollow, 0), ForceMode2D.Impulse);
+            audio.Play();
 
         }
         else if (comeHereChorva)
