@@ -6,6 +6,10 @@ public class CameraAutoZoom : MonoBehaviour
 {
     Camera camera;
     float radar;
+    float timer;
+    [SerializeField]
+    float timerMargin;
+    bool focus;
 
     // Set up references.
     void Awake()
@@ -17,22 +21,45 @@ public class CameraAutoZoom : MonoBehaviour
     void Start()
     {
         radar = 2f;
+        timer = timerMargin;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Physics2D.OverlapCircle(new Vector2(camera.transform.position.x, camera.transform.position.y), radar, 1 << LayerMask.NameToLayer("Enemy")))
+        timer -= Time.deltaTime;
+        if (timer <= 0)
         {
-            camera.orthographicSize = camera.orthographicSize - 0.01f;
-            radar = radar - 0.01f;
-            Debug.Log("There are enemies!");
+            timer = timerMargin;
+            if (Physics2D.OverlapCircle(new Vector2(camera.transform.position.x, camera.transform.position.y), radar, 1 << LayerMask.NameToLayer("Enemy")))
+            {
+                focus = true;
+                camera.orthographicSize = camera.orthographicSize - 0.01f;
+                radar = radar - 0.01f;
+                Debug.Log("There are enemies!");
+            }
+            else
+            {
+                focus = false;
+                camera.orthographicSize = camera.orthographicSize + 0.01f;
+                radar = radar + 0.01f;
+                Debug.Log("There are not visible enemies!");
+            }
         }
         else
         {
-            camera.orthographicSize = camera.orthographicSize + 0.01f;
-            radar = radar + 0.01f;
-            Debug.Log("There are not visible enemies!");
+            if (focus && Physics2D.OverlapCircle(new Vector2(camera.transform.position.x, camera.transform.position.y), radar, 1 << LayerMask.NameToLayer("Enemy")))
+            {
+                camera.orthographicSize = camera.orthographicSize - 0.01f;
+                radar = radar - 0.01f;
+                Debug.Log("There are enemies!");
+            }
+            else if (!focus && !Physics2D.OverlapCircle(new Vector2(camera.transform.position.x, camera.transform.position.y), radar, 1 << LayerMask.NameToLayer("Enemy")))
+            {
+                camera.orthographicSize = camera.orthographicSize + 0.01f;
+                radar = radar + 0.01f;
+                Debug.Log("There are not visible enemies!");
+            }
         }
         Debug.DrawRay(camera.transform.position, new Vector3(0f, radar, 0f), Color.green, 1f);
     }
