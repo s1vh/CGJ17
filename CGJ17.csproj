@@ -93,7 +93,10 @@
     <Compile Include="Assets\Scripts\RepulsionField.cs" />
     <Compile Include="Assets\Spawner.cs" />
     <Compile Include="Assets\Sprites\EventTriggerController.cs" />
+<<<<<<< HEAD
     <Compile Include="Assets\WaveMagic.cs" />
+=======
+>>>>>>> origin/master
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

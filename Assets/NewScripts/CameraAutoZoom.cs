@@ -26,14 +26,21 @@ public class CameraAutoZoom : MonoBehaviour
     void Start()
     {
         radar = baseSize - 1f;
+<<<<<<< HEAD
         timerMargin = 2f;
+=======
+>>>>>>> origin/master
         timer = timerMargin;
     }
 
     // Update is called once per frame
     void Update()
     {
+<<<<<<< HEAD
         if (Input.GetButtonUp("Fire2"))
+=======
+        if (Input.GetButtonUp("Fire1"))
+>>>>>>> origin/master
         {
             if (auto)
             {
@@ -87,7 +94,11 @@ public class CameraAutoZoom : MonoBehaviour
         }
         else
         {
+<<<<<<< HEAD
             if (camera.orthographicSize - 0.02f > baseSize)
+=======
+            if(camera.orthographicSize - 0.02f > baseSize)
+>>>>>>> origin/master
             {
                 camera.orthographicSize = camera.orthographicSize - 0.02f;
             }
